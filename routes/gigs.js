@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
-const Gig = require("../models/Gig");
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
+const db = require("../models");
 
 // Get gig list
 router.get("/", (req, res) =>
-  Gig.findAll()
+  db.Gig.findAll()
     .then(gigs =>
       res.render("gigs", {
         gigs
@@ -59,7 +56,7 @@ router.post("/add", (req, res) => {
     technologies = technologies.toLowerCase().replace(/, /g, ",");
 
     // Insert into table
-    Gig.create({
+    db.Gig.create({
       title,
       technologies,
       description,

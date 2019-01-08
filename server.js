@@ -1,34 +1,34 @@
-const express = require("express");
-const exphbs = require("express-handlebars");
-const bodyParser = require("body-parser");
-const path = require("path");
+// *****************************************************************************
+// Server.js - This file is the initial starting point for the Node/Express server.
+//
+// ******************************************************************************
+// *** Dependencies
+// =============================================================
+var express = require("express");
 
-// Database
-const db = require("./models");
+// Sets up the Express App
+// =============================================================
+var app = express();
+var PORT = process.env.PORT || 8080;
 
-// Test DB
-db.authenticate()
-  .then(() => console.log("Database connected..."))
-  .catch(err => console.log("Error: " + err));
+// Requiring our models for syncing
+var db = require("./models");
 
-const app = express();
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// Static directory
+app.use(express.static("public"));
 
-// Body Parser
-app.use(bodyParser.urlencoded({ extended: false }));
+// Routes
+// =============================================================
+require("./routes/gigs.js")(app);
 
-// Set static folder
-app.use(express.static(path.join(__dirname, "public")));
-
-// Index route
-app.get("/", (req, res) => res.render("index", { layout: "landing" }));
-
-// Gig routes
-app.use("/gigs", require("./routes/gigs"));
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+// Syncing our sequelize models and then starting our Express app
+// =============================================================
+db.sequelize.sync({ force: true }).then(function() {
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
+});

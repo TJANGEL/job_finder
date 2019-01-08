@@ -1,19 +1,19 @@
 module.exports = function(sequelize, DataTypes) {
-  const Gig = db.define("gig", {
+  const Gig = sequelize.define("gig", {
     title: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     technologies: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     description: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     budget: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     contact_email: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     }
   });
   return Gig;
