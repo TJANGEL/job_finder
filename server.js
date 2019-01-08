@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 // Database
-const db = require("./config/database");
+const db = require("./models");
 
 // Test DB
 db.authenticate()
